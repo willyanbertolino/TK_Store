@@ -1,0 +1,46 @@
+export default [
+  {
+    id: 1,
+    userName: 'Peter',
+    email: 'peter@gmail.com',
+    password: 'asg34tbf90re324',
+    license: 'superuser',
+  },
+  {
+    id: 2,
+    userName: 'John',
+    email: 'john@gmail.com',
+    password: 'asg34tbf90re235',
+    license: 'user',
+  },
+  {
+    id: 3,
+    userName: 'Mike',
+    email: 'mike@gmail.com',
+    password: 'asg34tbf90rewet',
+    license: 'user',
+  },
+  {
+    id: 4,
+    userName: 'Anna',
+    email: 'anna@gmail.com',
+    password: 'asg34tbf90reyrt',
+    license: 'user',
+  },
+  {
+    id: 5,
+    userName: 'Jeniffer',
+    email: 'jeniffer@gmail.com',
+    password: 'asg34tbf90reog3',
+    password: 'asg34tbf90re324',
+    license: 'superuser',
+  },
+  {
+    id: 6,
+    userName: 'Robert',
+    email: 'robert@gmail.com',
+    password: 'asg34tbf90reog3',
+    password: 'asg34tbf90re324',
+    license: 'user',
+  },
+];
