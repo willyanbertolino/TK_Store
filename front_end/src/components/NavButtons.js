@@ -1,18 +1,21 @@
 import { FaHeart, FaShoppingBag, FaBell } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { useNavbarContext } from '../context/navbar_context';
 
-const NavButtons = ({ closeSidebar }) => {
-  const notification = 0;
+const NavButtons = () => {
+  const notification = 1;
   const love = 3;
   const cart = 7;
+
+  const { changePage } = useNavbarContext();
 
   return (
     <Wrapper>
       <Link
         to="/notifications"
         className="cart-love-btn"
-        onClick={() => closeSidebar(false)}
+        onClick={() => changePage('notLink')}
       >
         <span className="container">
           <FaBell />
@@ -22,7 +25,7 @@ const NavButtons = ({ closeSidebar }) => {
       <Link
         to="/love"
         className="cart-love-btn"
-        onClick={() => closeSidebar(false)}
+        onClick={() => changePage('notLink')}
       >
         <span className="container">
           <FaHeart />
@@ -32,7 +35,7 @@ const NavButtons = ({ closeSidebar }) => {
       <Link
         to="/cart"
         className="cart-love-btn"
-        onClick={() => closeSidebar(false)}
+        onClick={() => changePage('notLink')}
       >
         <span className="container">
           <FaShoppingBag />
@@ -47,7 +50,7 @@ const Wrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   place-items: center;
-  width: 180px;
+  width: 9rem;
 
   .cart-love-btn {
     color: var(--clr-primary-2);

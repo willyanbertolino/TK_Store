@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Notifications = () => {
-  return <div>notifications</div>;
+  return <div className="page-height">notifications</div>;
 };
 
 export default Notifications;

@@ -5,20 +5,17 @@ import NavButtons from './NavButtons';
 import { FaBars, FaUser } from 'react-icons/fa';
 import { links } from '../utils/constants';
 import LogsBtn from './LogsBtn';
+import { useNavbarContext } from '../context/navbar_context';
 
 const Navbar = () => {
   const user = { isAuthenticated: true, name: 'Will' };
-  const [page, setPage] = useState('home');
-  const [sidebar, setSidebar] = useState(false);
-
-  const handleClick = (pageName) => {
-    setPage(pageName);
-    setSidebar(false);
-  };
-
-  const closeSidebar = (value) => {
-    setSidebar(value);
-  };
+  const {
+    page,
+    sidebar,
+    openSidebar,
+    closeSidebar,
+    changePage,
+  } = useNavbarContext();
 
   function linksDisplay() {
     return links.map((item) => {
@@ -26,10 +23,8 @@ const Navbar = () => {
 
       if (page !== text)
         return (
-          <Link to={url}>
-            <li key={id} onClick={() => handleClick(text)}>
-              {text}
-            </li>
+          <Link to={url} key={id}>
+            <li onClick={() => changePage(text)}>{text}</li>
           </Link>
         );
     });
@@ -40,11 +35,7 @@ const Navbar = () => {
       <div className="nav-center">
         <div className="nav-header">
           <Link to="/">TK Store</Link>
-          <button
-            type="button"
-            className="nav-toggle"
-            onClick={() => setSidebar(!sidebar)}
-          >
+          <button type="button" className="nav-toggle" onClick={openSidebar}>
             <FaBars />
           </button>
         </div>
@@ -53,13 +44,18 @@ const Navbar = () => {
         <ul className="nav-links">
           {linksDisplay()}
           {user.isAuthenticated && (
-            <Link to="/checkout">
-              <li onClick={() => handleClick('checkout')}>checkout</li>
+            <Link to="/checkout" key="checkout">
+              <li onClick={() => changePage('checkout')}>checkout</li>
             </Link>
           )}
         </ul>
         <div className="nav-btn-show">
-          <NavButtons closeSidebar={closeSidebar} />
+          <NavButtons />
+          <div className="user user-small">
+            <Link to="/user">
+              <FaUser />
+            </Link>
+          </div>
         </div>
 
         {/* small screen */}
@@ -69,27 +65,27 @@ const Navbar = () => {
           <button
             type="button"
             className="close-side-links"
-            onClick={() => setSidebar(!sidebar)}
+            onClick={closeSidebar}
           ></button>
 
           <div className="user-container">
-            <div className="user" onClick={() => setSidebar(false)}>
+            <div className="user" onClick={closeSidebar}>
               <Link to="/user">
                 <FaUser />
               </Link>
             </div>
             <h2>{user.name}</h2>
-            <NavButtons closeSidebar={closeSidebar} />
+            <NavButtons />
           </div>
 
           <ul className="side-links">
             {linksDisplay()}
             {user.isAuthenticated && (
-              <Link to="/checkout">
-                <li onClick={() => handleClick('checkout')}>checkout</li>
+              <Link to="/checkout" key="checkout">
+                <li onClick={() => changePage('checkout')}>checkout</li>
               </Link>
             )}
-            <LogsBtn closeSidebar={closeSidebar} />
+            <LogsBtn />
           </ul>
         </aside>
       </div>
@@ -104,7 +100,7 @@ const NavContainer = styled.nav`
   justify-content: center;
 
   .nav-center {
-    width: 90vw;
+    width: 85vw;
     margin: 0 auto;
     max-width: 1100px;
   }
@@ -181,6 +177,17 @@ const NavContainer = styled.nav`
     border-color: var(--clr-primary-3);
   }
 
+  .user-small {
+    width: 40px;
+    height: 40px;
+    margin-left: 2rem;
+    margin-top: 0.8rem;
+  }
+
+  .user-small svg {
+    font-size: 1.2rem;
+  }
+
   .user-container h2 {
     font-size: 1rem;
     margin-bottom: 1.5rem;
@@ -246,7 +253,7 @@ const NavContainer = styled.nav`
     display: none;
   }
 
-  @media screen and (min-width: 680px) {
+  @media screen and (min-width: 900px) {
     .nav-toggle {
       display: none;
     }

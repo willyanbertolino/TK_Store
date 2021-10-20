@@ -1,9 +1,12 @@
 import { FaUserMinus, FaUserPlus } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { useNavbarContext } from '../context/navbar_context';
 
-const LogsBtn = ({ closeSidebar }) => {
+const LogsBtn = () => {
   const login = false;
+
+  const { changePage } = useNavbarContext();
 
   return (
     <Wrapper>
@@ -17,13 +20,13 @@ const LogsBtn = ({ closeSidebar }) => {
             <Link
               to="/login"
               className="auth-btn"
-              onClick={() => closeSidebar(false)}
+              onClick={() => changePage('notLink')}
             >
               Login <FaUserPlus />
             </Link>
           </div>
           <div className="signup">
-            <Link to="/signup" onClick={() => closeSidebar(false)}>
+            <Link to="/signup" onClick={() => changePage('notLink')}>
               Signup
             </Link>
           </div>

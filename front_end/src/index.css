@@ -137,6 +137,11 @@ p {
 }
 /*  global classes */
 
+.section-center {
+  width: 85vw;
+  margin: 2rem auto;
+}
+
 .btn {
   text-transform: uppercase;
   background: var(--clr-primary-1);
@@ -152,11 +157,35 @@ p {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
+.btn-link {
+  padding: 0.7rem 1rem;
+  color: var(--clr-primary-5);
+  background: var(--clr-primary-2);
+  text-transform: uppercase;
+  font-size: 1rem;
+  transition: var(--transition);
+}
+
+.btn-link:hover {
+  color: var(--clr-primary-2);
+  background: var(--clr-primary-5);
+}
+.btn-link:visited {
+  color: var(--clr-primary-5);
+}
+.btn-link:visited:hover {
+  color: var(--clr-primary-2);
+}
+
 /* removing chrome autofill */
 input:-webkit-autofill,
 textarea:-webkit-autofill,
 select:-webkit-autofill {
   -webkit-box-shadow: 0 0 0px 1000px #fff inset;
+}
+
+.page-height {
+  min-height: calc(100vh - 10rem);
 }
 
 /* 
@@ -168,7 +197,7 @@ Login and Signup pages
 .section-user {
   display: grid;
   place-items: center;
-  margin-top: 3rem;
+  margin: 3rem 0;
 }
 
 .container-user {

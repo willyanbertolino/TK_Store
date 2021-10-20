@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Love = () => {
-  return <div>Love</div>;
+  return <div className="page-height">Love</div>;
 };
 
 export default Love;
