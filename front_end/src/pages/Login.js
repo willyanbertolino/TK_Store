@@ -2,13 +2,13 @@ import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import { TKStoreContext } from '../utils/context';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [eye, setEye] = useState(true);
-  const { isLogin, error } = useContext(TKStoreContext);
+  const isLogin = false;
+  const error = '';
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -77,7 +77,7 @@ const Login = () => {
 };
 
 const Wrapper = styled.section`
-  .input-container-user input:focus + label {
+  input:focus + label {
     color: var(--clr-grey-6);
     transform: translateY(-4.1rem);
   }

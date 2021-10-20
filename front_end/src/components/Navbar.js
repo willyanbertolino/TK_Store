@@ -1,0 +1,286 @@
+import { useState } from 'react';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import NavButtons from './NavButtons';
+import { FaBars, FaUser } from 'react-icons/fa';
+import { links } from '../utils/constants';
+import LogsBtn from './LogsBtn';
+
+const Navbar = () => {
+  const user = { isAuthenticated: true, name: 'Will' };
+  const [page, setPage] = useState('home');
+  const [sidebar, setSidebar] = useState(false);
+
+  const handleClick = (pageName) => {
+    setPage(pageName);
+    setSidebar(false);
+  };
+
+  const closeSidebar = (value) => {
+    setSidebar(value);
+  };
+
+  function linksDisplay() {
+    return links.map((item) => {
+      const { id, text, url } = item;
+
+      if (page !== text)
+        return (
+          <Link to={url}>
+            <li key={id} onClick={() => handleClick(text)}>
+              {text}
+            </li>
+          </Link>
+        );
+    });
+  }
+
+  return (
+    <NavContainer>
+      <div className="nav-center">
+        <div className="nav-header">
+          <Link to="/">TK Store</Link>
+          <button
+            type="button"
+            className="nav-toggle"
+            onClick={() => setSidebar(!sidebar)}
+          >
+            <FaBars />
+          </button>
+        </div>
+
+        {/* wide screen */}
+        <ul className="nav-links">
+          {linksDisplay()}
+          {user.isAuthenticated && (
+            <Link to="/checkout">
+              <li onClick={() => handleClick('checkout')}>checkout</li>
+            </Link>
+          )}
+        </ul>
+        <div className="nav-btn-show">
+          <NavButtons closeSidebar={closeSidebar} />
+        </div>
+
+        {/* small screen */}
+        <aside
+          className={`aside-container ${sidebar ? 'show-aside-container' : ''}`}
+        >
+          <button
+            type="button"
+            className="close-side-links"
+            onClick={() => setSidebar(!sidebar)}
+          ></button>
+
+          <div className="user-container">
+            <div className="user" onClick={() => setSidebar(false)}>
+              <Link to="/user">
+                <FaUser />
+              </Link>
+            </div>
+            <h2>{user.name}</h2>
+            <NavButtons closeSidebar={closeSidebar} />
+          </div>
+
+          <ul className="side-links">
+            {linksDisplay()}
+            {user.isAuthenticated && (
+              <Link to="/checkout">
+                <li onClick={() => handleClick('checkout')}>checkout</li>
+              </Link>
+            )}
+            <LogsBtn closeSidebar={closeSidebar} />
+          </ul>
+        </aside>
+      </div>
+    </NavContainer>
+  );
+};
+
+const NavContainer = styled.nav`
+  height: 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .nav-center {
+    width: 90vw;
+    margin: 0 auto;
+    max-width: 1100px;
+  }
+
+  .nav-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    a {
+      font-family: var(--ff-secondary);
+      font-size: 1.6rem;
+      color: var(--clr-primary-2);
+      letter-spacing: var(--spacing);
+      background: var(--clr-primary-5);
+      padding: 1rem 0.7rem 0 0.3rem;
+      border-radius: 50% 50% 0 5% / 50% 100% 0 15%;
+    }
+  }
+
+  .nav-toggle {
+    background: transparent;
+    border: transparent;
+    color: var(--clr-primary-3);
+    cursor: pointer;
+
+    svg {
+      font-size: 2rem;
+    }
+  }
+
+  .aside-container {
+    display: none;
+    position: fixed;
+    left: 100%;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 10;
+  }
+
+  .user-container {
+    position: absolute;
+    left: 65%;
+    top: 2rem;
+    width: 180px;
+    transform: translateX(-50%);
+    z-index: 10;
+  }
+
+  .user {
+    width: 80px;
+    height: 80px;
+    border: 2px solid var(--clr-primary-4);
+    color: var(--clr-primary-4);
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    margin: 0 auto;
+    margin-bottom: 1rem;
+    transition: var(--transition);
+  }
+
+  .user svg {
+    font-size: 2.3rem;
+    transition: var(--transition);
+  }
+
+  .user:hover svg {
+    color: var(--clr-primary-3);
+  }
+  .user:hover {
+    cursor: pointer;
+    border-color: var(--clr-primary-3);
+  }
+
+  .user-container h2 {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    color: var(--clr-primary-2);
+    text-align: center;
+  }
+
+  .side-links {
+    position: absolute;
+    left: 30%;
+    width: 70%;
+    height: 100vh;
+    background: var(--clr-bcg);
+    padding-top: 15rem;
+    padding-left: 3rem;
+    border-left: 1px solid var(--clr-primary-1);
+    transition: var(--transition);
+  }
+
+  .show-aside-container {
+    display: block;
+    left: 0;
+  }
+
+  .side-links li {
+    font-size: 1.3rem;
+    padding: 1rem 1.3rem;
+    width: 100%;
+    margin-bottom: 1rem;
+    letter-spacing: var(--spacing);
+    text-transform: capitalize;
+    border-top-left-radius: 1rem;
+    border-bottom-left-radius: 1rem;
+    transition: var(--transition);
+    background: var(--clr-secondary-1);
+  }
+
+  .side-links li:hover {
+    border-bottom: 1px solid var(--clr-primary-1);
+    background: var(--clr-secondary-3);
+    cursor: pointer;
+  }
+
+  .side-links li:hover a {
+    color: var(--clr-secondary-2);
+  }
+
+  .close-side-links {
+    position: absolute;
+    left: 0%;
+    width: 30%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.2);
+    border: transparent;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    cursor: pointer;
+  }
+
+  .nav-btn-show,
+  .nav-links {
+    display: none;
+  }
+
+  @media screen and (min-width: 680px) {
+    .nav-toggle {
+      display: none;
+    }
+
+    .nav-center {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+    }
+
+    .nav-links {
+      display: flex;
+      justify-content: center;
+
+      li {
+        margin: 0 0.5rem;
+      }
+
+      a {
+        color: var(--clr-grey-3);
+        font-size: 1rem;
+        text-transform: capitalize;
+        letter-spacing: var(--spacing);
+        padding: 0.5rem;
+
+        &:hover {
+          border-bottom: 2px solid var(--clr-primary-7);
+        }
+      }
+    }
+    .nav-btn-show {
+      display: flex;
+    }
+  }
+`;
+
+export default Navbar;

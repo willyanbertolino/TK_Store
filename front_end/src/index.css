@@ -3,7 +3,7 @@
 Fonts
 ===============
 */
-@import url('https://fonts.googleapis.com/css?family=Open+Sans|Roboto:400,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto@1&display=swap');
 
 /*
 =============== 
@@ -13,17 +13,16 @@ Variables
 
 :root {
   /* primary/main color */
-  --clr-primary-1: #57b7dd;
-  --clr-primary-2: #3675c7;
-  --clr-primary-3: #22569b;
-  --clr-primary-4: #2b4b74;
-  --clr-primary-5: #10253d;
+  --clr-primary-1: #3f2624;
+  --clr-primary-2: #4f3432;
+  --clr-primary-3: #754643;
+  --clr-primary-4: #795f5d;
+  --clr-primary-5: #b18380;
+  --clr-primary-6: #f5beba;
   /* secondary color */
-  --clr-secondary-1: #b4a9cf;
-  --clr-secondary-2: #8d71cf;
-  --clr-secondary-3: #5e2dd1;
-  --clr-secondary-4: #4218a3;
-  --clr-secondary-5: #241053;
+  --clr-secondary-1: #bebdc0;
+  --clr-secondary-2: #9d95ac;
+  --clr-secondary-3: #514569;
   /* darkest grey - used for headings */
   --clr-grey-1: #222;
   --clr-grey-2: #333;
@@ -35,7 +34,7 @@ Variables
   --clr-grey-8: #999;
   --clr-grey-9: #aaa;
   --clr-grey-10: #bbb;
-  --clr-grey-11: #eee;
+  --clr-bcg: #eee;
   --clr-white: #fff;
   --clr-black: #000;
   --clr-red-dark: hsl(360, 67%, 44%);
@@ -43,7 +42,7 @@ Variables
   --clr-green-dark: hsl(125, 67%, 44%);
   --clr-green-light: hsl(125, 71%, 66%);
   --ff-primary: 'Roboto', sans-serif;
-  --ff-secondary: 'Open Sans', sans-serif;
+  --ff-secondary: 'Pacifico';
   --transition: all 0.3s linear;
   --spacing: 0.1rem;
   --radius: 0.25rem;
@@ -66,8 +65,8 @@ Global Styles
   box-sizing: border-box;
 }
 body {
-  font-family: var(--ff-secondary);
-  background: var(--clr-grey-11);
+  font-family: var(--ff-primary);
+  background: var(--clr-bcg);
   color: var(--clr-grey-1);
   line-height: 1.5;
   font-size: 0.875rem;
@@ -78,6 +77,11 @@ ul {
 a {
   text-decoration: none;
 }
+
+a:visited {
+  color: var(--clr-primary-2);
+}
+
 img {
   width: 100%;
   display: block;
@@ -155,33 +159,6 @@ select:-webkit-autofill {
   -webkit-box-shadow: 0 0 0px 1000px #fff inset;
 }
 
-/* section */
-.section {
-  padding: 1rem 0;
-  position: relative;
-}
-
-.section-center {
-  width: 90vw;
-  margin: 0 auto;
-  max-width: 1170px;
-}
-@media screen and (min-width: 992px) {
-  .section-center {
-    width: 95vw;
-  }
-}
-.loading-img {
-  width: 20rem;
-  height: 20rem;
-  display: block;
-  margin: 0 auto;
-  margin-top: 10rem;
-}
-main {
-  padding-bottom: 2rem;
-}
-
 /* 
 =============================
 Login and Signup pages
@@ -189,13 +166,13 @@ Login and Signup pages
 */
 
 .section-user {
-  height: 100vh;
   display: grid;
   place-items: center;
+  margin-top: 3rem;
 }
 
 .container-user {
-  width: 100vw;
+  width: 80vw;
   max-width: 400px;
   padding-top: 2rem;
   border-radius: 1rem;

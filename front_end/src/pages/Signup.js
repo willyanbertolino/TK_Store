@@ -13,7 +13,7 @@ const Signup = () => {
   });
   const [eyePassword, setEyePassword] = useState(true);
   const [eyePasswordRepeat, setEyePasswordRepeat] = useState(true);
-  const { isLogin } = useContext(TKStoreContext);
+  const isLogin = false;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -131,9 +131,9 @@ const Signup = () => {
             </p>
 
             <div className="btn-submit">
-              <button type="button" className="btn cancel-btn">
+              <Link to="/" className="btn cancel-btn">
                 Cancel
-              </button>
+              </Link>
               <button type="submit" className="btn signup-btn">
                 Sign Up
               </button>
@@ -166,20 +166,20 @@ const Wrapper = styled.section`
 
   .btn-submit {
     display: flex;
+    align-items: center;
     justify-content: center;
   }
 
   .cancel-btn {
-    border-top-left-radius: 0.7rem;
-    border-bottom-left-radius: 0.7rem;
+    border-top-left-radius: 1.5rem;
+    border-bottom-left-radius: 1.5rem;
     line-height: 2rem;
     width: 50%;
     opacity: 0.6;
-    background-image: linear-gradient(
-      to right,
-      var(--clr-secondary-4),
-      var(--clr-primary-5)
-    );
+    text-align: center;
+    font-weight: 400;
+    color: var(--clr-white);
+    background: var(--clr-primary-1);
   }
 
   .signup-btn {
@@ -188,11 +188,6 @@ const Wrapper = styled.section`
     line-height: 2rem;
     width: 50%;
     opacity: 0.7;
-    background-image: linear-gradient(
-      to left,
-      var(--clr-secondary-4),
-      var(--clr-primary-5)
-    );
   }
 
   .btn:hover {

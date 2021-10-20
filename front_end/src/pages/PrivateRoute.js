@@ -10,14 +10,16 @@ const PrivateRoute = ({ children, path, ...rest }) => {
       {...rest}
       render={() => {
         if (isAuthenticated) {
-          if (path === '/') {
+          if (path === '/checkout') {
             return children;
           }
           if (path === '/admin') {
             return isAdmin ? children : <Redirect to="/" />;
           }
         }
-        return <Redirect to="/login" />;
+        // Need to be login?
+        // return <Redirect to="/login" />;
+        return <Redirect to="/" />;
       }}
     />
   );
