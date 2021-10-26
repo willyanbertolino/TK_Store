@@ -37,11 +37,37 @@ const Wrapper = styled.section`
   place-items: center;
   color: var(--clr-primary-1);
 
+  article {
+    width: 100%;
+    height: 100%;
+    display: grid;
+  }
+
+  .content {
+    position: relative;
+  }
+
   p {
-    line-height: 2;
-    max-width: 45rem;
+    align-self: center;
+    line-height: 1.5;
+    max-width: 40rem;
     color: var(--clr-primary-2);
     font-size: 1rem;
+    padding-bottom: 3rem;
+  }
+
+  a {
+    position: absolute;
+    bottom: 0;
+    text-shadow: 3px 1px 5px var(--clr-primary-4);
+  }
+
+  @media (min-width: 990px) {
+    grid-template-columns: 1fr 1fr;
+
+    .content {
+      margin-right: 3rem;
+    }
   }
 `;
 

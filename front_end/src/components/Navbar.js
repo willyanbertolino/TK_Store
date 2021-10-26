@@ -6,6 +6,7 @@ import { FaBars, FaUser } from 'react-icons/fa';
 import { links } from '../utils/constants';
 import LogsBtn from './LogsBtn';
 import { useNavbarContext } from '../context/navbar_context';
+import { useWindowSize } from '../custom_hook/window_size';
 
 const Navbar = () => {
   const user = { isAuthenticated: true, name: 'Will' };
@@ -16,6 +17,11 @@ const Navbar = () => {
     closeSidebar,
     changePage,
   } = useNavbarContext();
+
+  const width = useWindowSize();
+  if (width >= 900) {
+    closeSidebar();
+  }
 
   function linksDisplay() {
     return links.map((item) => {
