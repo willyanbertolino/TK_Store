@@ -5,6 +5,8 @@ import product2 from '../assets/product2.jpeg';
 import { useState, useEffect } from 'react';
 import { useWindowSize } from '../custom_hook/window_size';
 import { checkNumber, formatPrice } from '../utils/functions';
+import { Link } from 'react-router-dom';
+import { useNavbarContext } from '../context/navbar_context';
 
 const featuredProducts = [
   { id: 1, mainImg: product1, name: 'Product1', price: 23.5 },
@@ -18,6 +20,7 @@ const featuredProducts = [
 ];
 
 const FeaturedProducts = () => {
+  const { changePage } = useNavbarContext();
   const width = useWindowSize();
 
   function initialNum(width) {
@@ -113,7 +116,6 @@ const FeaturedProducts = () => {
 
   return (
     <Wrapper className="section-center">
-      {console.log('html')}
       <h2 className="title">featured products</h2>
       <div className="container">
         <article className="content">
@@ -140,6 +142,13 @@ const FeaturedProducts = () => {
           </button>
         </div>
       </div>
+      <Link
+        to="/products"
+        onClick={() => changePage('products')}
+        className="btn-link all-products"
+      >
+        all products
+      </Link>
     </Wrapper>
   );
 };
@@ -222,6 +231,15 @@ const Wrapper = styled.section`
     height: 400px;
     object-fit: cover;
   }
+
+  .all-products {
+    position: absolute;
+    width: 300px;
+    text-align: center;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
   @media (min-width: 720px) {
     .content {
       grid-template-columns: repeat(2, 1fr);
