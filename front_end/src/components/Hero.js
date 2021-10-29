@@ -7,40 +7,45 @@ const Hero = () => {
   const { changePage } = useNavbarContext();
   return (
     <Wrapper className="section-center">
-      <article className="content">
-        <h1>
-          Live better <br />
-          Sleep more
-        </h1>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto
-          debitis fugit, vel modi ad, cupiditate nam temporibus ut sunt earum
-          quia, facilis ullam eaque minima?
-        </p>
-        <Link
-          to="/products"
-          onClick={() => changePage('products')}
-          className="btn-link"
-        >
-          shop now
-        </Link>
-      </article>
-      <article className="image-container">
-        <img src={heroBcg} alt="hero-img" />
-      </article>
+      <div className="container">
+        <article className="content">
+          <h1>
+            Live better <br />
+            Sleep more
+          </h1>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto
+            debitis fugit, vel modi ad, cupiditate nam temporibus ut sunt earum
+            quia, facilis ullam eaque minima?
+          </p>
+          <Link
+            to="/products"
+            onClick={() => changePage('products')}
+            className="btn-link"
+          >
+            shop now
+          </Link>
+        </article>
+        <article className="image-container">
+          <img src={heroBcg} alt="hero-img" />
+        </article>
+      </div>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.section`
-  display: grid;
-  place-items: center;
-  color: var(--clr-primary-1);
+  .container {
+    width: 100%;
+    min-height: calc(100vh - 5rem);
+    display: grid;
+    place-items: center;
+    color: var(--clr-primary-1);
+  }
 
   article {
     width: 100%;
     height: 100%;
-    display: grid;
   }
 
   .content {
@@ -63,10 +68,21 @@ const Wrapper = styled.section`
   }
 
   @media (min-width: 990px) {
-    grid-template-columns: 1fr 1fr;
+    a {
+      bottom: 30%;
+    }
+
+    .container {
+      margin-top: 5rem;
+      grid-template-columns: 1fr 1fr;
+    }
 
     .content {
       margin-right: 3rem;
+    }
+
+    .container {
+      min-height: calc(100vh - 10rem);
     }
   }
 `;

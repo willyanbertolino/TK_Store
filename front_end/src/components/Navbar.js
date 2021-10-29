@@ -58,7 +58,7 @@ const Navbar = () => {
         <div className="nav-btn-show">
           <NavButtons />
           <div className="user user-small">
-            <Link to="/user">
+            <Link to="/user" onClick={() => changePage('user')}>
               <FaUser />
             </Link>
           </div>
@@ -76,7 +76,7 @@ const Navbar = () => {
 
           <div className="user-container">
             <div className="user" onClick={closeSidebar}>
-              <Link to="/user">
+              <Link to="/user" onClick={() => changePage('checkout')}>
                 <FaUser />
               </Link>
             </div>

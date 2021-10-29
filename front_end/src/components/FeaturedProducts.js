@@ -1,14 +1,14 @@
-import styled from 'styled-components';
+import { useState, useEffect } from 'react';
 import { FaChevronRight, FaChevronLeft } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import { useWindowSize } from '../custom_hook/window_size';
+import { useNavbarContext } from '../context/navbar_context';
+import { checkNumber, formatPrice, sliderClassCss } from '../utils/functions';
 import product1 from '../assets/product1.jpeg';
 import product2 from '../assets/product2.jpeg';
-import { useState, useEffect } from 'react';
-import { useWindowSize } from '../custom_hook/window_size';
-import { checkNumber, formatPrice } from '../utils/functions';
-import { Link } from 'react-router-dom';
-import { useNavbarContext } from '../context/navbar_context';
 
-const featuredProducts = [
+let featuredProducts = [
   { id: 1, mainImg: product1, name: 'Product1', price: 23.5 },
   { id: 2, mainImg: product2, name: 'Product2', price: 50.46 },
   { id: 3, mainImg: product1, name: 'Product3', price: 34.7 },
@@ -17,59 +17,28 @@ const featuredProducts = [
   { id: 6, mainImg: product2, name: 'Product6', price: 245.7 },
   { id: 7, mainImg: product1, name: 'Product7', price: 590.9 },
   { id: 8, mainImg: product2, name: 'Product8', price: 1099.99 },
+  { id: 9, mainImg: product1, name: 'Product9', price: 2599.99 },
+  { id: 10, mainImg: product1, name: 'Product10', price: 2799.99 },
 ];
 
 const FeaturedProducts = () => {
   const { changePage } = useNavbarContext();
   const width = useWindowSize();
 
-  function initialNum(width) {
-    if (width <= 720) {
-      return 1;
-    }
-    if (width > 720 && width <= 990) {
-      return 2;
-    }
-    if (width > 990) {
-      return 3;
-    }
-  }
-
-  const [index1, setIndex1] = useState(0);
-  const [index2, setIndex2] = useState(1);
-  const [index3, setIndex3] = useState(2);
-  const [num, setNum] = useState(initialNum(width));
-  const [array, setArray] = useState([]);
+  const [index, setIndex] = useState(0);
+  const [num, setNum] = useState(1);
 
   // reset indexes
   useEffect(() => {
-    setIndex1(0);
-    setIndex2(1);
-    setIndex3(2);
+    setIndex(0);
   }, [num]);
 
-  // display products controled by screen size and indexes
+  // display products controled by screen size
   useEffect(() => {
-    if (width <= 720) {
-      setNum(1);
-      setArray([featuredProducts[index1]]);
-      return;
-    }
-    if (width > 720 && width <= 990) {
-      setNum(2);
-      setArray([featuredProducts[index1], featuredProducts[index2]]);
-      return;
-    }
-    if (width > 990) {
-      setNum(3);
-      setArray([
-        featuredProducts[index1],
-        featuredProducts[index2],
-        featuredProducts[index3],
-      ]);
-      return;
-    }
-  }, [width, index1, index2, index3]);
+    if (width <= 720) setNum(1);
+    if (width > 720 && width <= 990) setNum(2);
+    if (width > 990) setNum(3);
+  }, [width]);
 
   // slide control
   useEffect(() => {
@@ -80,37 +49,21 @@ const FeaturedProducts = () => {
     return () => {
       clearInterval(slider);
     };
-  }, [num, index1]);
+  }, [num, index]);
 
   // preview products
   const prevProduct = () => {
-    setIndex1((index) => {
+    setIndex((index) => {
       let newIndex = index - num;
-      return checkNumber(num, newIndex, featuredProducts.length);
-    });
-    setIndex2((index) => {
-      let newIndex = index - num;
-      return checkNumber(num, newIndex, featuredProducts.length);
-    });
-    setIndex3((index) => {
-      let newIndex = index - num;
-      return checkNumber(num, newIndex, featuredProducts.length);
+      return checkNumber(num, newIndex, featuredProducts.length - 1);
     });
   };
 
   // next products
   const nextProduct = () => {
-    setIndex1((index) => {
+    setIndex((index) => {
       let newIndex = index + num;
-      return checkNumber(num, newIndex, featuredProducts.length);
-    });
-    setIndex2((index) => {
-      let newIndex = index + num;
-      return checkNumber(num, newIndex, featuredProducts.length);
-    });
-    setIndex3((index) => {
-      let newIndex = index + num;
-      return checkNumber(num, newIndex, featuredProducts.length);
+      return checkNumber(num, newIndex, featuredProducts.length - 1);
     });
   };
 
@@ -118,21 +71,28 @@ const FeaturedProducts = () => {
     <Wrapper className="section-center">
       <h2 className="title">featured products</h2>
       <div className="container">
-        <article className="content">
-          {array.map((product) => {
-            const { id, mainImg: img, name, price } = product;
+        {featuredProducts.map((product, productIndex) => {
+          const { id, mainImg: img, name, price } = product;
 
-            return (
-              <div key={id} className="card-container">
-                <img src={img} alt={name} />
-                <div className="info">
-                  <h4>{name}</h4>
-                  <p>{formatPrice(price)}</p>
-                </div>
+          return (
+            <article
+              key={productIndex}
+              className={`card-container ${sliderClassCss(
+                num,
+                productIndex,
+                index,
+                featuredProducts.length - 1
+              )}`}
+            >
+              <img src={img} alt={name} />
+              <div className="info">
+                <h4>{name}</h4>
+                <p>{formatPrice(price)}</p>
               </div>
-            );
-          })}
-        </article>
+            </article>
+          );
+        })}
+
         <div className="button-container">
           <button className="prev-btn" onClick={prevProduct}>
             <FaChevronLeft />
@@ -141,30 +101,29 @@ const FeaturedProducts = () => {
             <FaChevronRight />
           </button>
         </div>
+        <Link
+          to="/products"
+          onClick={() => changePage('products')}
+          className="btn-link all-products"
+        >
+          all products
+        </Link>
       </div>
-      <Link
-        to="/products"
-        onClick={() => changePage('products')}
-        className="btn-link all-products"
-      >
-        all products
-      </Link>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.section`
+  min-height: 110vh;
+  overflow: hidden;
+
   .container {
     position: relative;
+    height: 70%;
   }
 
   .card-container img {
-    transition: var(--transition);
-  }
-
-  .content {
-    display: grid;
-    grid-template-columns: 1fr;
+    max-height: 60vh;
   }
 
   .title {
@@ -227,6 +186,31 @@ const Wrapper = styled.section`
     border-bottom-left-radius: 50%;
   }
 
+  .card-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: var(--transition);
+  }
+
+  .activeSlide {
+    opacity: 1;
+  }
+
+  .active {
+    transform: translateX(0);
+  }
+
+  .lastSlide {
+    transform: translateX(-100%);
+  }
+  .nextSlide {
+    transform: translateX(100%);
+  }
+
   .card-container img {
     height: 400px;
     object-fit: cover;
@@ -234,22 +218,43 @@ const Wrapper = styled.section`
 
   .all-products {
     position: absolute;
-    width: 300px;
-    text-align: center;
+    top: 28rem;
     left: 50%;
     transform: translateX(-50%);
+    max-width: 300px;
+    text-align: center;
   }
 
   @media (min-width: 720px) {
-    .content {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1rem;
+    .active1 {
+      width: 47.5%;
+    }
+    .active2 {
+      width: 47.5%;
+      transform: translateX(110.3%);
+    }
+    .nextSlide {
+      transform: translateX(220%);
     }
   }
 
   @media (min-width: 990px) {
-    .content {
-      grid-template-columns: repeat(3, 1fr);
+    .card-container {
+      transition: all 0.7s linear;
+    }
+    .active1 {
+      width: 32%;
+    }
+    .active2 {
+      width: 32%;
+      transform: translateX(106.3%);
+    }
+    .active3 {
+      width: 32%;
+      transform: translateX(212.6%);
+    }
+    .nextSlide {
+      transform: translateX(330%);
     }
   }
 `;
