@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import NavButtons from './NavButtons';
@@ -19,9 +19,12 @@ const Navbar = () => {
   } = useNavbarContext();
 
   const width = useWindowSize();
-  if (width >= 900) {
-    closeSidebar();
-  }
+
+  useEffect(() => {
+    if (width >= 900) {
+      closeSidebar();
+    }
+  }, [width]);
 
   function linksDisplay() {
     return links.map((item) => {

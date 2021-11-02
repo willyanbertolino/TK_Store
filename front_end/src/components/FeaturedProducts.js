@@ -28,7 +28,7 @@ const FeaturedProducts = () => {
   const [index, setIndex] = useState(0);
   const [num, setNum] = useState(1);
 
-  // reset indexes
+  // reset index
   useEffect(() => {
     setIndex(0);
   }, [num]);
@@ -54,7 +54,7 @@ const FeaturedProducts = () => {
   // preview products
   const prevProduct = () => {
     setIndex((index) => {
-      let newIndex = index - num;
+      let newIndex = index - 1;
       return checkNumber(num, newIndex, featuredProducts.length - 1);
     });
   };
@@ -62,7 +62,8 @@ const FeaturedProducts = () => {
   // next products
   const nextProduct = () => {
     setIndex((index) => {
-      let newIndex = index + num;
+      let newIndex = index + 1;
+      // let newIndex = index + num;
       return checkNumber(num, newIndex, featuredProducts.length - 1);
     });
   };
@@ -70,6 +71,7 @@ const FeaturedProducts = () => {
   return (
     <Wrapper className="section-center">
       <h2 className="title">featured products</h2>
+
       <div className="container">
         {featuredProducts.map((product, productIndex) => {
           const { id, mainImg: img, name, price } = product;
@@ -77,7 +79,7 @@ const FeaturedProducts = () => {
           return (
             <article
               key={productIndex}
-              className={`card-container ${sliderClassCss(
+              className={`card ${sliderClassCss(
                 num,
                 productIndex,
                 index,
@@ -114,29 +116,25 @@ const FeaturedProducts = () => {
 };
 
 const Wrapper = styled.section`
-  min-height: 110vh;
+  height: 100vh;
   overflow: hidden;
 
   .container {
     position: relative;
-    height: 70%;
-  }
-
-  .card-container img {
-    max-height: 60vh;
+    height: calc(100% - 7rem);
   }
 
   .title {
     text-transform: capitalize;
     color: var(--clr-primary-2);
-    padding: 2rem 0;
+    margin: 2rem 0;
   }
 
   .info {
-    height: 3rem;
     display: grid;
     grid-template-columns: 4fr 1fr;
-    align-items: center;
+    padding-top: 1rem;
+
     & p {
       text-align: right;
     }
@@ -186,14 +184,19 @@ const Wrapper = styled.section`
     border-bottom-left-radius: 50%;
   }
 
-  .card-container {
+  .card {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: 80%;
     opacity: 0;
     transition: var(--transition);
+  }
+
+  img {
+    height: 90%;
+    object-fit: cover;
   }
 
   .activeSlide {
@@ -207,13 +210,10 @@ const Wrapper = styled.section`
   .lastSlide {
     transform: translateX(-100%);
   }
-  .nextSlide {
-    transform: translateX(100%);
-  }
 
-  .card-container img {
-    height: 400px;
-    object-fit: cover;
+  .nextSlide {
+    right: 0;
+    transform: translateX(100%);
   }
 
   .all-products {
@@ -233,15 +233,9 @@ const Wrapper = styled.section`
       width: 47.5%;
       transform: translateX(110.3%);
     }
-    .nextSlide {
-      transform: translateX(220%);
-    }
   }
 
   @media (min-width: 990px) {
-    .card-container {
-      transition: all 0.7s linear;
-    }
     .active1 {
       width: 32%;
     }
@@ -252,9 +246,6 @@ const Wrapper = styled.section`
     .active3 {
       width: 32%;
       transform: translateX(212.6%);
-    }
-    .nextSlide {
-      transform: translateX(330%);
     }
   }
 `;
