@@ -33,7 +33,7 @@ const Sort = () => {
       <p>{products.length} products found</p>
       <hr />
       <form>
-        <label htmlFor="sort">sort by</label>
+        <label htmlFor="sort">sort by:</label>
         <select
           name="sort"
           id="sort"
@@ -58,16 +58,23 @@ const Wrapper = styled.section`
   margin-bottom: 2rem;
   column-gap: 2rem;
 
+  label {
+    display: inline-block;
+    margin-right: 0.5rem;
+  }
+
+  select {
+    cursor: pointer;
+    border: 0;
+    outline: none;
+  }
+
   @media (max-width: 576px) {
     display: grid;
     grid-template-columns: 1fr;
     row-gap: 0.75rem;
     .btn-container {
       width: 50px;
-    }
-    label {
-      display: inline-block;
-      margin-right: 0.5rem;
     }
   }
   @media (min-width: 768px) {

@@ -5,25 +5,15 @@ import styled from 'styled-components';
 import { useWindowSize } from '../custom_hook/window_size';
 import { useNavbarContext } from '../context/navbar_context';
 import { checkNumber, formatPrice, sliderClassCss } from '../utils/functions';
-import product1 from '../assets/product1.jpeg';
-import product2 from '../assets/product2.jpeg';
 
-let featuredProducts = [
-  { id: 1, mainImg: product1, name: 'Product1', price: 23.5 },
-  { id: 2, mainImg: product2, name: 'Product2', price: 50.46 },
-  { id: 3, mainImg: product1, name: 'Product3', price: 34.7 },
-  { id: 4, mainImg: product2, name: 'Product4', price: 145.7 },
-  { id: 5, mainImg: product1, name: 'Product5', price: 187.5 },
-  { id: 6, mainImg: product2, name: 'Product6', price: 245.7 },
-  { id: 7, mainImg: product1, name: 'Product7', price: 590.9 },
-  { id: 8, mainImg: product2, name: 'Product8', price: 1099.99 },
-  { id: 9, mainImg: product1, name: 'Product9', price: 2599.99 },
-  { id: 10, mainImg: product1, name: 'Product10', price: 2799.99 },
-];
+import { useProductsContext } from '../context/products_context';
 
 const FeaturedProducts = () => {
   const { changePage } = useNavbarContext();
+  const { featured_products: products } = useProductsContext();
   const width = useWindowSize();
+
+  console.log(products);
 
   const [index, setIndex] = useState(0);
   const [num, setNum] = useState(1);
@@ -55,7 +45,7 @@ const FeaturedProducts = () => {
   const prevProduct = () => {
     setIndex((index) => {
       let newIndex = index - 1;
-      return checkNumber(num, newIndex, featuredProducts.length - 1);
+      return checkNumber(num, newIndex, products.length - 1);
     });
   };
 
@@ -64,7 +54,7 @@ const FeaturedProducts = () => {
     setIndex((index) => {
       let newIndex = index + 1;
       // let newIndex = index + num;
-      return checkNumber(num, newIndex, featuredProducts.length - 1);
+      return checkNumber(num, newIndex, products.length - 1);
     });
   };
 
@@ -73,20 +63,20 @@ const FeaturedProducts = () => {
       <h2 className="title">featured products</h2>
 
       <div className="container">
-        {featuredProducts.map((product, productIndex) => {
-          const { id, mainImg: img, name, price } = product;
+        {products.map((product, productIndex) => {
+          const { id, image, name, price } = product;
 
           return (
             <article
-              key={productIndex}
+              key={id}
               className={`card ${sliderClassCss(
                 num,
                 productIndex,
                 index,
-                featuredProducts.length - 1
+                products.length - 1
               )}`}
             >
-              <img src={img} alt={name} />
+              <img src={image} alt={name} />
               <div className="info">
                 <h4>{name}</h4>
                 <p>{formatPrice(price)}</p>
@@ -122,6 +112,9 @@ const Wrapper = styled.section`
   .container {
     position: relative;
     height: calc(100% - 7rem);
+    display: flex;
+    justify-content: center;
+    align-items: end;
   }
 
   .title {
@@ -134,8 +127,14 @@ const Wrapper = styled.section`
     display: grid;
     grid-template-columns: 4fr 1fr;
     padding-top: 1rem;
+    align-items: center;
 
+    & h4 {
+      margin-bottom: 0;
+      text-transform: capitalize;
+    }
     & p {
+      margin-bottom: 0;
       text-align: right;
     }
   }
@@ -143,8 +142,7 @@ const Wrapper = styled.section`
   .button-container {
     position: absolute;
     width: 85vw;
-    top: 200px;
-    transform: translateY(-50%);
+    top: 33%;
     display: flex;
     justify-content: space-between;
   }
@@ -217,10 +215,6 @@ const Wrapper = styled.section`
   }
 
   .all-products {
-    position: absolute;
-    top: 28rem;
-    left: 50%;
-    transform: translateX(-50%);
     max-width: 300px;
     text-align: center;
   }
