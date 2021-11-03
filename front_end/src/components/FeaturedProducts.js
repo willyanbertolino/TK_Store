@@ -13,8 +13,6 @@ const FeaturedProducts = () => {
   const { featured_products: products } = useProductsContext();
   const width = useWindowSize();
 
-  console.log(products);
-
   const [index, setIndex] = useState(0);
   const [num, setNum] = useState(1);
 

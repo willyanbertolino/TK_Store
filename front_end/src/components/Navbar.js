@@ -26,6 +26,7 @@ const Navbar = () => {
     }
   }, [width]);
 
+  // show the links to navigate
   function linksDisplay() {
     return links.map((item) => {
       const { id, text, url } = item;

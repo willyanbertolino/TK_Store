@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 
 const NavbarContext = React.createContext();
 
@@ -6,14 +6,29 @@ export const NavbarProvider = ({ children }) => {
   const [page, setPage] = useState('home');
   const [sidebar, setSidebar] = useState(false);
 
-  const changePage = (pageName) => {
-    setPage(pageName);
+  // navbar update when click on back history browser button
+  useEffect(() => {
+    window.addEventListener('popstate', () => {
+      let path = window.location.pathname.substring(1);
+
+      if (path === '') {
+        path = 'home';
+      }
+
+      setPage(path);
+    });
+  }, []);
+
+  // change page and update navibar links
+  const changePage = (page) => {
+    setPage(page);
     setSidebar(false);
   };
 
   const openSidebar = () => {
     setSidebar(true);
   };
+
   const closeSidebar = () => {
     setSidebar(false);
   };
