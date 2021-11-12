@@ -37,13 +37,13 @@ const FeaturedProducts = () => {
     return () => {
       clearInterval(slider);
     };
-  }, [num, index]);
+  }, [products, num, index]);
 
   // preview products
   const prevProduct = () => {
     setIndex((index) => {
       let newIndex = index - 1;
-      return checkNumber(num, newIndex, products.length - 1);
+      return checkNumber(newIndex, products.length - 1);
     });
   };
 
@@ -51,8 +51,7 @@ const FeaturedProducts = () => {
   const nextProduct = () => {
     setIndex((index) => {
       let newIndex = index + 1;
-      // let newIndex = index + num;
-      return checkNumber(num, newIndex, products.length - 1);
+      return checkNumber(newIndex, products.length - 1);
     });
   };
 

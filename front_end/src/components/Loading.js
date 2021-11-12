@@ -1,7 +1,11 @@
 import React from 'react';
 
 const Loading = () => {
-  return <div>loading</div>;
+  return (
+    <div className="section-center page">
+      <div className="loading"></div>
+    </div>
+  );
 };
 
 export default Loading;
