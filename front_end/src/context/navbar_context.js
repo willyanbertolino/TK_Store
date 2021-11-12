@@ -7,17 +7,26 @@ export const NavbarProvider = ({ children }) => {
   const [sidebar, setSidebar] = useState(false);
 
   // navbar update when click on back history browser button
+
+  const updatePage = () => {
+    let path = window.location.pathname.substring(1);
+
+    if (path === '') {
+      path = 'home';
+    }
+
+    return path;
+  };
+
   useEffect(() => {
     window.addEventListener('popstate', () => {
-      let path = window.location.pathname.substring(1);
-
-      if (path === '') {
-        path = 'home';
-      }
-
-      setPage(path);
+      setPage(updatePage());
     });
   }, []);
+
+  useEffect(() => {
+    setPage(updatePage());
+  });
 
   // change page and update navibar links
   const changePage = (page) => {
@@ -35,7 +44,13 @@ export const NavbarProvider = ({ children }) => {
 
   return (
     <NavbarContext.Provider
-      value={{ page, sidebar, openSidebar, closeSidebar, changePage }}
+      value={{
+        page,
+        sidebar,
+        openSidebar,
+        closeSidebar,
+        changePage,
+      }}
     >
       {children}
     </NavbarContext.Provider>

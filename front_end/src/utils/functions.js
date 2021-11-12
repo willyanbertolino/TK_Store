@@ -1,3 +1,4 @@
+// format price - many components uses this funciton
 export const formatPrice = (value) => {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -5,6 +6,7 @@ export const formatPrice = (value) => {
   }).format(value);
 };
 
+// slider control from home page
 export const checkNumber = (i, max) => {
   if (i > max) {
     return 0;
@@ -16,6 +18,7 @@ export const checkNumber = (i, max) => {
   return i;
 };
 
+// slider control (css class) from home page
 export const sliderClassCss = (num, productIndex, index, max) => {
   let position = 'nextSlide';
   if (num === 1) {
@@ -61,6 +64,7 @@ export const sliderClassCss = (num, productIndex, index, max) => {
   return position;
 };
 
+// select unique values for filter component
 export const getUniqueValues = (data, type) => {
   let unique = data.map((item) => item[type]);
 

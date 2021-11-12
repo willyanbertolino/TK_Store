@@ -63,84 +63,88 @@ const Filters = () => {
             </div>
           </div>
 
-          {/* company */}
-          <div className="form-control">
-            <h5>company</h5>
-            <select
-              name="company"
-              value={company}
-              onChange={updateFilters}
-              className="company"
-            >
-              {companies.map((c, i) => {
-                return (
-                  <option key={i} value={c}>
-                    {c}
-                  </option>
-                );
-              })}
-            </select>
-          </div>
+          <div className="group-categories">
+            {/* company */}
+            <div className="form-control">
+              <h5>company</h5>
+              <select
+                name="company"
+                value={company}
+                onChange={updateFilters}
+                className="company"
+              >
+                {companies.map((c, i) => {
+                  return (
+                    <option key={i} value={c}>
+                      {c}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
 
-          {/* colors */}
-          <div className="form-control">
-            <h5>colors</h5>
-            <div className="colors">
-              {colors.map((c, i) => {
-                if (c === 'all') {
+            {/* colors */}
+            <div className="form-control">
+              <h5>colors</h5>
+              <div className="colors">
+                {colors.map((c, i) => {
+                  if (c === 'all') {
+                    return (
+                      <button
+                        key={i}
+                        name="color"
+                        onClick={updateFilters}
+                        data-color="all"
+                        className={`all-btn ${color === 'all' && 'active'}`}
+                      >
+                        all
+                      </button>
+                    );
+                  }
                   return (
                     <button
                       key={i}
                       name="color"
+                      style={{ background: c }}
+                      className={`color-btn ${color === c && 'active'}`}
+                      type="button"
+                      data-color={c}
                       onClick={updateFilters}
-                      data-color="all"
-                      className={`all-btn ${color === 'all' && 'active'}`}
                     >
-                      all
+                      {color === c ? <FaCheck /> : null}
                     </button>
                   );
-                }
-                return (
-                  <button
-                    key={i}
-                    name="color"
-                    style={{ background: c }}
-                    className={`color-btn ${color === c && 'active'}`}
-                    type="button"
-                    data-color={c}
-                    onClick={updateFilters}
-                  >
-                    {color === c ? <FaCheck /> : null}
-                  </button>
-                );
-              })}
+                })}
+              </div>
             </div>
           </div>
 
-          {/* price */}
-          <div className="form-control">
-            <h5>price</h5>
-            <p className="price">{formatPrice(price)}</p>
-            <input
-              type="range"
-              name="price"
-              onChange={updateFilters}
-              min={min_price}
-              max={max_price}
-              value={price}
-            />
-          </div>
+          <div className="group-categories">
+            {/* price */}
+            <div className="form-control">
+              <h5>price</h5>
+              <p className="price">{formatPrice(price)}</p>
+              <input
+                type="range"
+                name="price"
+                onChange={updateFilters}
+                min={min_price}
+                max={max_price}
+                value={price}
+              />
+            </div>
 
-          {/* shipping */}
-          <div className="form-control shipping">
-            <label htmlFor="shipping"> free shipping</label>
-            <input
-              type="checkbox"
-              name="shipping"
-              id="shipping"
-              checked={shipping}
-              onChange={updateFilters}
-            />
+            {/* shipping */}
+            <div className="form-control shipping">
+              <label htmlFor="shipping"> free shipping</label>
+              <input
+                type="checkbox"
+                name="shipping"
+                id="shipping"
+                checked={shipping}
+                onChange={updateFilters}
+              />
+            </div>
           </div>
         </form>
         <button type="button" className="clear-btn" onClick={clearFilters}>
@@ -154,6 +158,7 @@ const Filters = () => {
 const Wrapper = styled.section`
   .form-control {
     margin-bottom: 1.25rem;
+    text-transform: capitalize;
 
     & h5 {
       margin-bottom: 0.5rem;
@@ -161,6 +166,7 @@ const Wrapper = styled.section`
   }
 
   .search-input {
+    width: 100%;
     padding: 0.5rem;
     background: var(--clr-grey-10);
     border-radius: var(--radius);
@@ -192,6 +198,12 @@ const Wrapper = styled.section`
     border-color: var(--clr-grey-5);
   }
 
+  .group-categories {
+    display: flex;
+    justify-content: space-between;
+    /* margin-right: 2rem; */
+  }
+
   .company {
     background: var(--clr-grey-11);
     outline: none;
@@ -202,6 +214,7 @@ const Wrapper = styled.section`
   .colors {
     display: flex;
     align-items: center;
+    margin-top: 1rem;
   }
 
   .color-btn {
@@ -256,6 +269,7 @@ const Wrapper = styled.section`
     text-transform: capitalize;
     column-gap: 0.5rem;
     font-size: 1rem;
+    margin-right: 0.6rem;
   }
 
   .clear-btn {
@@ -280,6 +294,10 @@ const Wrapper = styled.section`
     .content {
       position: sticky;
       top: 1rem;
+    }
+
+    .group-categories {
+      display: block;
     }
   }
 `;

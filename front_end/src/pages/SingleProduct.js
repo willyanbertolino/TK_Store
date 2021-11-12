@@ -6,10 +6,12 @@ import { formatPrice } from '../utils/functions';
 import { Loading, Error, ProductImages, AddToCart, Stars } from '../components';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { useNavbarContext } from '../context/navbar_context';
 
 const SingleProduct = () => {
   const { id } = useParams();
   const history = useHistory();
+  const { changePage } = useNavbarContext();
   const {
     single_product_loading: loading,
     single_product_error: error,
@@ -25,6 +27,7 @@ const SingleProduct = () => {
     if (error) {
       setTimeout(() => {
         history.push('/products');
+        changePage('products');
       }, 3000);
     }
   }, [error]);
@@ -52,7 +55,11 @@ const SingleProduct = () => {
   return (
     <Wrapper className="section-center">
       <div className=" page-height">
-        <Link to="/products" className="btn-link">
+        <Link
+          to="/products"
+          className="btn-link"
+          onClick={() => changePage('products')}
+        >
           back to products
         </Link>
         <div className="product-center">
