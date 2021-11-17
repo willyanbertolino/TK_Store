@@ -15,7 +15,7 @@ const Product = ({ image, name, price, id }) => {
         <Link
           to={`/products/${id}`}
           className="link"
-          onClick={() => changePage('notLink')}
+          onClick={() => changePage('single_product')}
         >
           <FaSearch />
         </Link>

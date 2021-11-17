@@ -2,11 +2,12 @@ import { FaHeart, FaShoppingBag, FaBell } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useNavbarContext } from '../context/navbar_context';
+import { useCartContext } from '../context/cart_context';
 
 const NavButtons = () => {
+  const { total_items } = useCartContext();
   const notification = 1;
   const love = 3;
-  const cart = 7;
 
   const { changePage } = useNavbarContext();
 
@@ -15,7 +16,7 @@ const NavButtons = () => {
       <Link
         to="/notifications"
         className="cart-love-btn"
-        onClick={() => changePage('notLink')}
+        onClick={() => changePage('notifications')}
       >
         <span className="container">
           <FaBell />
@@ -25,7 +26,7 @@ const NavButtons = () => {
       <Link
         to="/love"
         className="cart-love-btn"
-        onClick={() => changePage('notLink')}
+        onClick={() => changePage('love')}
       >
         <span className="container">
           <FaHeart />
@@ -35,11 +36,11 @@ const NavButtons = () => {
       <Link
         to="/cart"
         className="cart-love-btn"
-        onClick={() => changePage('notLink')}
+        onClick={() => changePage('cart')}
       >
         <span className="container">
           <FaShoppingBag />
-          {cart !== 0 && <span className="value">{cart}</span>}
+          {total_items !== 0 && <span className="value">{total_items}</span>}
         </span>
       </Link>
     </Wrapper>
