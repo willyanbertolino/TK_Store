@@ -7,6 +7,7 @@ import Hero from './Hero';
 import Services from './Services';
 import Contact from './Contact';
 import Loading from './Loading';
+import WishContent from './WishContent';
 import Error from './Error';
 import ProductImages from './ProductImages';
 import AddToCart from './AddToCart';
@@ -25,6 +26,7 @@ export {
   Services,
   Contact,
   Loading,
+  WishContent,
   Error,
   ProductImages,
   AddToCart,

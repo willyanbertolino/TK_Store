@@ -6,6 +6,7 @@ import { NavbarProvider } from './context/navbar_context';
 import { FilterProvider } from './context/filter_context';
 import { ProductsProvider } from './context/products_context';
 import { CartProvider } from './context/cart_context';
+import { WishProvider } from './context/wish_context';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -13,7 +14,9 @@ ReactDOM.render(
       <ProductsProvider>
         <FilterProvider>
           <CartProvider>
-            <App />
+            <WishProvider>
+              <App />
+            </WishProvider>
           </CartProvider>
         </FilterProvider>
       </ProductsProvider>

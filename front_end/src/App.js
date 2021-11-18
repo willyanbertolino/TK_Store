@@ -12,7 +12,7 @@ import {
   Products,
   Error,
   PrivateRoute,
-  Love,
+  Wish,
   Notifications,
   User,
 } from './pages';
@@ -33,8 +33,8 @@ function App() {
         <Route path="/cart" exact>
           <Cart />
         </Route>
-        <Route path="/love" exact>
-          <Love />
+        <Route path="/wish" exact>
+          <Wish />
         </Route>
         <Route path="/notifications" exact>
           <Notifications />

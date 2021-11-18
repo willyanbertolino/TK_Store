@@ -3,11 +3,12 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useNavbarContext } from '../context/navbar_context';
 import { useCartContext } from '../context/cart_context';
+import { useWishContext } from '../context/wish_context';
 
 const NavButtons = () => {
   const { total_items } = useCartContext();
   const notification = 1;
-  const love = 3;
+  const { wish_amount: wish } = useWishContext();
 
   const { changePage } = useNavbarContext();
 
@@ -24,18 +25,18 @@ const NavButtons = () => {
         </span>
       </Link>
       <Link
-        to="/love"
-        className="cart-love-btn"
-        onClick={() => changePage('love')}
+        to="/wish"
+        className="cart-wish-btn"
+        onClick={() => changePage('wish')}
       >
         <span className="container">
           <FaHeart />
-          {love !== 0 && <span className="value">{love}</span>}
+          {wish !== 0 && <span className="value">{wish}</span>}
         </span>
       </Link>
       <Link
         to="/cart"
-        className="cart-love-btn"
+        className="cart-wish-btn"
         onClick={() => changePage('cart')}
       >
         <span className="container">
@@ -53,7 +54,7 @@ const Wrapper = styled.div`
   place-items: center;
   width: 9rem;
 
-  .cart-love-btn {
+  .cart-wish-btn {
     color: var(--clr-primary-2);
     font-size: 1.3rem;
     letter-spacing: var(--spacing);

@@ -3,12 +3,14 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { FaCheck } from 'react-icons/fa';
 import { useCartContext } from '../context/cart_context';
+import { useWishContext } from '../context/wish_context';
 import { useNavbarContext } from '../context/navbar_context';
 import AmountButtons from './AmountButtons';
 
 const AddToCart = ({ product }) => {
   const { changePage } = useNavbarContext();
   const { addToCart } = useCartContext();
+  const { addToWish, wish } = useWishContext();
   const { id, stock, colors } = product;
   const [mainColor, setMainColor] = useState(colors[0]);
   const [amount, setAmount] = useState(1);
@@ -31,6 +33,15 @@ const AddToCart = ({ product }) => {
       }
       return tempAmount;
     });
+  };
+
+  const disableWishBtn = (id, wish) => {
+    let disabled = false;
+    const tempItem = wish.find((item) => item.id === id);
+    if (tempItem) {
+      disabled = true;
+    }
+    return disabled;
   };
 
   const handleClick = (id, mainColor, amount, product) => {
@@ -66,19 +77,32 @@ const AddToCart = ({ product }) => {
           amount={amount}
         />
       </div>
-      <Link
-        to="/cart"
-        className="btn-link"
-        onClick={() => handleClick(id, mainColor, amount, product)}
-      >
-        add to cart
-      </Link>
+      <div className="btns">
+        <button
+          type="button"
+          className="btn-link wish-btn"
+          disabled={disableWishBtn(id, wish)}
+          onClick={() => addToWish(id, product)}
+        >
+          {disableWishBtn(id, wish) ? 'added to wish' : 'add to wish'}
+        </button>
+        <Link
+          to="/cart"
+          className="btn-link"
+          onClick={() => handleClick(id, mainColor, amount, product)}
+        >
+          add to bag
+        </Link>
+      </div>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.section`
   margin-top: 2rem;
+  display: grid;
+  place-items: center;
+
   .colors {
     display: grid;
     grid-template-columns: 125px, 1fr;
@@ -94,24 +118,26 @@ const Wrapper = styled.section`
     }
   }
 
-  .color-btn {
-    display: inline-block;
-    width: 1.5rem;
-    height: 1.5rem;
-    border-radius: 50%;
-    background: var(--clr-grey-1);
-    margin-right: 0.5rem;
-    border: none;
-    cursor: pointer;
-    opacity: 0.5;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .color-btn svg {
+    font-size: 0.8rem;
+    color: var(--clr-white);
+  }
 
-    svg {
-      font-size: 0.8rem;
-      color: var(--clr-white);
-    }
+  .btns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 1.5rem;
+  }
+
+  .wish-btn {
+    cursor: pointer;
+    border: transparent;
+  }
+
+  .wish-btn:disabled {
+    background: var(--clr-grey-8);
+    color: var(--clr-primary-1);
+    cursor: auto;
   }
 
   .active {

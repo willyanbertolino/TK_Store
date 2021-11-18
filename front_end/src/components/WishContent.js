@@ -1,21 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useCartContext } from '../context/cart_context';
+import { useWishContext } from '../context/wish_context';
 import { Link } from 'react-router-dom';
 import WishCartColumns from './WishCartColumns';
-import CartItem from './CartItem';
-import CartTotal from './CartTotal';
+import WishItem from './WishItem';
 import { useNavbarContext } from '../context/navbar_context';
 
-const CartContent = () => {
-  const { cart, clearCart } = useCartContext();
+const WishContent = () => {
+  const { wish, clearWish } = useWishContext();
   const { changePage } = useNavbarContext();
 
   return (
-    <Wrapper className="section-center">
-      <WishCartColumns sign={'cart'} />
-      {cart.map((item) => {
-        return <CartItem key={item.id} {...item} />;
+    <Wrapper className="section-center page">
+      <WishCartColumns sign={'wish'} />
+      {wish.map((item) => {
+        return <WishItem key={item.id} {...item} />;
       })}
       <hr />
       <div className="link-container">
@@ -24,18 +23,17 @@ const CartContent = () => {
           onClick={() => changePage('products')}
           className="btn-link"
         >
-          continue shopping
+          continue shopiing
         </Link>
         <button
           type="button"
-          onClick={clearCart}
+          onClick={clearWish}
           className="btn-link
      clear-btn"
         >
-          clear shopping bag
+          clear wish list
         </button>
       </div>
-      <CartTotal />
     </Wrapper>
   );
 };
@@ -53,4 +51,4 @@ const Wrapper = styled.section`
   }
 `;
 
-export default CartContent;
+export default WishContent;
