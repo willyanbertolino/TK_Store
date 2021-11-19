@@ -16,7 +16,8 @@ import ProductList from './ProductList';
 import Sort from './Sort';
 import Stars from './Stars';
 import CartContent from './CartContent';
-import StripeCheckout from './StripeCheckout';
+import Payment from './Payment';
+
 export {
   FeaturedProducts,
   Navbar,
@@ -35,5 +36,5 @@ export {
   Sort,
   Stars,
   CartContent,
-  StripeCheckout,
+  Payment,
 };

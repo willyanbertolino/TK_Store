@@ -1,3 +1,3 @@
 export const isLogin = () => {
-  return { isAuthenticated: false, isAdmin: false };
+  return { isAuthenticated: true, isAdmin: false };
 };
