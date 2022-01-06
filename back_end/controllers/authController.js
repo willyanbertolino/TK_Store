@@ -1,18 +1,60 @@
 const User = require('../models/User');
 const { StatusCodes } = require('http-status-codes');
 const CustomAPIError = require('../errors');
-const { attachCookiesToResponse, createTokenUser } = require('../utils');
+const {
+  attachCookiesToResponse,
+  createTokenUser,
+  sendVerificationEmail,
+} = require('../utils');
+const crypto = require('crypto');
 
 const register = async (req, res) => {
   const { name, email, password } = req.body;
 
-  const user = await User.create({ name, email, password });
+  const verificationToken = crypto.randomBytes(40).toString('hex');
 
-  const tokenUser = createTokenUser(user);
+  const user = await User.create({ name, email, password, verificationToken });
 
-  attachCookiesToResponse({ res, user: tokenUser });
+  const origin = 'http://localhost:3000';
 
-  res.status(StatusCodes.CREATED).json({ user: tokenUser });
+  await sendVerificationEmail({
+    name: user.name,
+    email: user.email,
+    verificationToken: user.verificationToken,
+    origin,
+  });
+
+  res.status(StatusCodes.CREATED).json({
+    msg: 'Success! Please check your email to verify account',
+  });
+
+  // const tokenUser = createTokenUser(user);
+
+  // attachCookiesToResponse({ res, user: tokenUser });
+
+  // res.status(StatusCodes.CREATED).json({ user: tokenUser });
+};
+
+const verifyEmail = async (req, res) => {
+  const { verificationToken, email } = req.body;
+
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    throw new CustomAPIError.UnauthenticatedError('Verification failed');
+  }
+
+  if (user.verificationToken !== verificationToken) {
+    throw new CustomAPIError.UnauthenticatedError('Verification failed');
+  }
+
+  user.isVerified = true;
+  user.verified = Date.now();
+  user.verificationToken = '';
+
+  await user.save();
+
+  res.status(StatusCodes.OK).json({ msg: 'Email verified' });
 };
 
 const login = async (req, res) => {
@@ -31,6 +73,10 @@ const login = async (req, res) => {
   }
 
   const isPasswordCorrect = await user.comparePassword(password);
+
+  if (!user.isVerified) {
+    throw new CustomAPIError.UnauthenticatedError('Please verify your email');
+  }
 
   if (!isPasswordCorrect) {
     throw new CustomAPIError.UnauthenticatedError('Invalid credentials');
@@ -52,4 +98,4 @@ const logout = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: 'user logged out' });
 };
 
-module.exports = { register, login, logout };
+module.exports = { register, login, logout, verifyEmail };

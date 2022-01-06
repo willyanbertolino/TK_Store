@@ -2,14 +2,15 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import NavButtons from './NavButtons';
-import { FaBars, FaUser } from 'react-icons/fa';
+import { FaBars, FaUser, FaUserPlus } from 'react-icons/fa';
 import { links } from '../utils/constants';
 import LogsBtn from './LogsBtn';
 import { useNavbarContext } from '../context/navbar_context';
 import { useWindowSize } from '../custom_hook/window_size';
+import { useUserContext } from '../context/user_context';
 
 const Navbar = () => {
-  const user = { isAuthenticated: true, name: 'Will' };
+  const { isUserAuthenticated, user } = useUserContext();
   const {
     page,
     sidebar,
@@ -19,6 +20,22 @@ const Navbar = () => {
   } = useNavbarContext();
 
   const width = useWindowSize();
+
+  const userControl = (screenSizeClassName) => {
+    return (
+      <div className={screenSizeClassName}>
+        {isUserAuthenticated ? (
+          <Link to="/user" onClick={() => changePage('user')}>
+            <FaUser />
+          </Link>
+        ) : (
+          <Link to="/login" onClick={() => changePage('login')}>
+            <FaUserPlus />
+          </Link>
+        )}
+      </div>
+    );
+  };
 
   useEffect(() => {
     if (width >= 900) {
@@ -53,19 +70,16 @@ const Navbar = () => {
         {/* wide screen */}
         <ul className="nav-links">
           {linksDisplay()}
-          {user.isAuthenticated && (
+          {isUserAuthenticated ? (
             <Link to="/checkout" key="checkout">
               <li onClick={() => changePage('checkout')}>checkout</li>
             </Link>
-          )}
+          ) : null}
         </ul>
         <div className="nav-btn-show">
           <NavButtons />
-          <div className="user user-small">
-            <Link to="/user" onClick={() => changePage('user')}>
-              <FaUser />
-            </Link>
-          </div>
+          {userControl('user user-small')}
+          <LogsBtn />
         </div>
 
         {/* small screen */}
@@ -79,10 +93,9 @@ const Navbar = () => {
           ></button>
 
           <div className="user-container">
-            <div className="user" onClick={closeSidebar}>
-              <Link to="/user" onClick={() => changePage('checkout')}>
-                <FaUser />
-              </Link>
+            <div onClick={closeSidebar}>
+              {userControl('user')}
+              <LogsBtn />
             </div>
             <h2>{user.name}</h2>
             <NavButtons />
@@ -90,12 +103,11 @@ const Navbar = () => {
 
           <ul className="side-links">
             {linksDisplay()}
-            {user.isAuthenticated && (
+            {isUserAuthenticated ? (
               <Link to="/checkout" key="checkout">
                 <li onClick={() => changePage('checkout')}>checkout</li>
               </Link>
-            )}
-            <LogsBtn />
+            ) : null}
           </ul>
         </aside>
       </div>
@@ -190,7 +202,7 @@ const NavContainer = styled.nav`
   .user-small {
     width: 40px;
     height: 40px;
-    margin-left: 2rem;
+    /* margin-left: 2rem; */
     margin-top: 0.8rem;
   }
 
@@ -295,7 +307,9 @@ const NavContainer = styled.nav`
       }
     }
     .nav-btn-show {
-      display: flex;
+      display: grid;
+      place-items: center;
+      grid-template-columns: 180px 70px auto;
     }
   }
 `;

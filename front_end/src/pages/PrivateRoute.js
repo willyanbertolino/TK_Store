@@ -1,25 +1,25 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import { isLogin } from '../utils/login';
+import { useUserContext } from '../context/user_context';
 
 const PrivateRoute = ({ children, path, ...rest }) => {
-  const { isAuthenticated, isAdmin } = isLogin();
+  const { isUserAuthenticated, user } = useUserContext();
 
   return (
     <Route
       {...rest}
       render={() => {
-        if (isAuthenticated) {
+        if (isUserAuthenticated) {
           if (path === '/checkout') {
             return children;
           }
           if (path === '/admin') {
-            return isAdmin ? children : <Redirect to="/" />;
+            return user.role === 'admin' ? children : <Redirect to="/" />;
           }
         }
         // Need to be login?
         // return <Redirect to="/login" />;
-        return <Redirect to="/" />;
+        return <Redirect to="/login" />;
       }}
     />
   );

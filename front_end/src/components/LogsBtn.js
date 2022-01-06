@@ -1,18 +1,17 @@
-import { FaUserMinus, FaUserPlus } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useNavbarContext } from '../context/navbar_context';
+import { useUserContext } from '../context/user_context';
 
 const LogsBtn = () => {
-  const login = false;
-
+  const { isUserAuthenticated } = useUserContext();
   const { changePage } = useNavbarContext();
 
   return (
     <Wrapper>
-      {login ? (
+      {isUserAuthenticated ? (
         <button type="button" className="auth-btn">
-          Logout <FaUserMinus />
+          Logout
         </button>
       ) : (
         <div className="login-signup">
@@ -22,7 +21,7 @@ const LogsBtn = () => {
               className="auth-btn"
               onClick={() => changePage('notLink')}
             >
-              Login <FaUserPlus />
+              Login
             </Link>
           </div>
           <div className="signup">
@@ -37,7 +36,7 @@ const LogsBtn = () => {
 };
 
 const Wrapper = styled.div`
-  margin-top: 3rem;
+  margin-top: 0;
 
   .login-signup {
     display: grid;
@@ -47,7 +46,7 @@ const Wrapper = styled.div`
 
   .auth-btn {
     display: flex;
-    align-items: center;
+    margin: 0 auto;
     background: transparent;
     border-color: transparent;
     font-size: 1.1rem;

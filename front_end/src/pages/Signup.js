@@ -1,18 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { useNavbarContext } from '../context/navbar_context';
+import { useUserContext } from '../context/user_context';
+import Loading from '../components/Loading';
+import Alert from '../components/Alert';
 
 const Signup = () => {
+  const { changePage } = useNavbarContext();
+  const {
+    user_loading: loading,
+    user_error_message: error,
+    isUserAuthenticated,
+    registerUser,
+  } = useUserContext();
+
+  console.log(useUserContext());
+
+  const [submitControl, setSubmitControl] = useState(true);
   const [newUser, setNewUser] = useState({
     name: '',
     email: '',
     password: '',
     passwordRepeat: '',
   });
+
   const [eyePassword, setEyePassword] = useState(true);
   const [eyePasswordRepeat, setEyePasswordRepeat] = useState(true);
-  const isLogin = false;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,14 +37,45 @@ const Signup = () => {
     });
   };
 
+  useEffect(() => {
+    const { name, email, password, passwordRepeat } = newUser;
+
+    if (name && email && password && passwordRepeat) {
+      setSubmitControl(false);
+    }
+  }, [newUser]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const { name, email, password, passwordRepeat } = newUser;
+
+    if (password !== passwordRepeat) {
+      setNewUser((prev) => {
+        return { ...prev, password: '', passwordRepeat: '' };
+      });
+      setSubmitControl(true);
+      return alert('Password does not match!');
+    }
+
+    registerUser({ name, email, password });
   };
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  if (isUserAuthenticated) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <Wrapper className="section-user">
       <div className="container-user">
         <h1>TK Store</h1>
+
+        {error ? <Alert msg={error} /> : null}
+
         <form>
           <div className="input-container-user">
             <p className="signup-text">
@@ -42,7 +88,6 @@ const Signup = () => {
               name="name"
               value={newUser.name}
               onChange={handleChange}
-              required
             />
             <label
               htmlFor="name"
@@ -60,7 +105,6 @@ const Signup = () => {
               name="email"
               value={newUser.email}
               onChange={handleChange}
-              required
             />
             <label
               htmlFor="email"
@@ -78,7 +122,7 @@ const Signup = () => {
               name="password"
               value={newUser.password}
               onChange={handleChange}
-              required
+              autoComplete="on"
             />
             <label
               htmlFor="password"
@@ -103,7 +147,7 @@ const Signup = () => {
               name="passwordRepeat"
               value={newUser.passwordRepeat}
               onChange={handleChange}
-              required
+              autoComplete="on"
             />
             <label
               htmlFor="passwordRepeat"
@@ -130,10 +174,21 @@ const Signup = () => {
             </p>
 
             <div className="btn-submit">
-              <Link to="/" className="btn cancel-btn">
+              <Link
+                to="/"
+                className="btn cancel-btn"
+                onClick={() => changePage('home')}
+              >
                 Cancel
               </Link>
-              <button type="submit" className="btn signup-btn">
+              <button
+                type="submit"
+                className={`btn signup-btn ${
+                  submitControl ? 'btn-disabled' : 'btn-active'
+                }`}
+                disabled={submitControl}
+                onClick={handleSubmit}
+              >
                 Sign Up
               </button>
             </div>
@@ -189,9 +244,15 @@ const Wrapper = styled.section`
     opacity: 0.7;
   }
 
-  .btn:hover {
+  .btn-active:hover {
     opacity: 1;
     font-size: 0.9rem;
+  }
+
+  .btn-disabled {
+    background: var(--clr-grey-10);
+    color: var(--clr-grey-4);
+    cursor: default;
   }
 
   .terms {
